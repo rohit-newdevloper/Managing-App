@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Card,
@@ -6,7 +7,7 @@ import {
   Input,
   Button,
 } from './common';
-import { emailChanged } from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -14,7 +15,35 @@ class LoginForm extends Component {
     eChange(text);
   }
 
+  onPasswordChange(text) {
+    const { pChanged } = this.props;
+    pChanged(text);
+  }
+
+  onButtonPress() {
+    const { lUser, email, password } = this.props;
+    lUser({ email, password });
+  }
+
+  renderError() {
+    const { error } = this.props;
+
+    if (error) {
+      return (
+        <View style={{ backgroundColor: 'white' }}>
+          <Text style={styles.errorTextStyle}>
+            {error}
+          </Text>
+        </View>
+      );
+    }
+
+    return <View style={{ display: 'none' }} />;
+  }
+
   render() {
+    const { email } = this.props;
+
     return (
       <Card>
         <CardSection>
@@ -22,6 +51,7 @@ class LoginForm extends Component {
             label="Email"
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
+            value={email}
           />
         </CardSection>
 
@@ -30,19 +60,40 @@ class LoginForm extends Component {
             secureTextEntry
             label="Password"
             placeholder="password"
+            onChangeText={this.onPasswordChange.bind(this)}
           />
         </CardSection>
 
+        {this.renderError()}
+
         <CardSection>
-          <Button>Login</Button>
+          <Button onPress={this.onButtonPress.bind(this)}>Login</Button>
         </CardSection>
       </Card>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return { email: state.email };
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red',
+  },
 };
 
-export default connect(mapStateToProps, { eChange: emailChanged })(LoginForm);
+const mapStateToProps = (state) => {
+  const { email, password, error } = state.auth;
+
+  return {
+    email,
+    password,
+    error,
+  };
+};
+
+export default connect(mapStateToProps, {
+  eChange: emailChanged,
+  pChanged: passwordChanged,
+  lUser: loginUser,
+})(LoginForm);
