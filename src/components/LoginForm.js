@@ -6,6 +6,7 @@ import {
   CardSection,
   Input,
   Button,
+  Spinner,
 } from './common';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 
@@ -23,6 +24,18 @@ class LoginForm extends Component {
   onButtonPress() {
     const { lUser, email, password } = this.props;
     lUser({ email, password });
+  }
+
+  renderButton() {
+    const { loading } = this.props;
+
+    if (loading) {
+      return <Spinner size="large" />;
+    }
+
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>Login</Button>
+    );
   }
 
   renderError() {
@@ -67,7 +80,7 @@ class LoginForm extends Component {
         {this.renderError()}
 
         <CardSection>
-          <Button onPress={this.onButtonPress.bind(this)}>Login</Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
@@ -83,12 +96,18 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { email, password, error } = state.auth;
+  const {
+    email,
+    password,
+    error,
+    loading,
+  } = state.auth;
 
   return {
     email,
     password,
     error,
+    loading,
   };
 };
 

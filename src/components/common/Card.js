@@ -1,13 +1,15 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from 'react';
+import { View } from 'react-native';
 
 const Card = (props) => {
+  const { children } = props;
+
   return (
-    <View style = {styles.containerStyle}>
-      {props.children}
+    <View style={styles.containerStyle}>
+      {children}
     </View>
-  )
-}
+  );
+};
 
 const styles = {
   containerStyle: {
@@ -19,7 +21,7 @@ const styles = {
     // IOS Shadow Configuration
     shadowColor: '#000',
     shadowOffset: {
-      width: 0, height: 2
+      width: 0, height: 2,
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -29,8 +31,8 @@ const styles = {
 
     marginLeft: 5,
     marginRight: 5,
-    marginTop: 10
-  }
-}
+    marginTop: 10,
+  },
+};
 
-export { Card }
+export { Card };
