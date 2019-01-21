@@ -55,7 +55,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { email } = this.props;
+    const { email, password } = this.props;
 
     return (
       <Card>
@@ -74,6 +74,7 @@ class LoginForm extends Component {
             label="Password"
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}
+            value={password}
           />
         </CardSection>
 
