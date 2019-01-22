@@ -7,10 +7,15 @@ import {
   Button,
   Input,
 } from './common';
-import { employeeUpdate } from '../actions/EmployeeActions';
+import { employeeUpdate, employeeCreate } from '../actions/EmployeeActions';
 
 class EmployeeCreate extends Component {
-  state = {};
+  onButtonPress() {
+    const { name, phone, shift } = this.props;
+    const { empCreate } = this.props;
+
+    empCreate({ name, phone, shift: shift || 'Monday' });
+  }
 
   render() {
     const {
@@ -66,7 +71,7 @@ class EmployeeCreate extends Component {
         </CardSection>
 
         <CardSection>
-          <Button>Create</Button>
+          <Button onPress={this.onButtonPress.bind(this)}>Create</Button>
         </CardSection>
       </Card>
     );
@@ -90,4 +95,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { empUpdate: employeeUpdate })(EmployeeCreate);
+export default connect(mapStateToProps, {
+  empUpdate: employeeUpdate,
+  empCreate: employeeCreate,
+})(EmployeeCreate);
